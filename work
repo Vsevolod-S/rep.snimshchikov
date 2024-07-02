@@ -1,0 +1,201 @@
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+import java.lang.Math;
+
+public class Main
+{
+    public static class Point
+    {
+        //точка с координатами (x,y)
+        private double x; 
+        private double y;
+        public Point(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+        
+        //задать координтаы
+        public void set_coords (double a, double b)
+        {
+            this.x = a;
+            this.y = b;
+        }
+
+        //получить компоненту х
+        public double get_x ()
+        {
+            return this.x;
+        }
+        
+        //пол
+        public double get_y ()
+        {
+            return this.y;
+        }
+
+        public void print_coords ()
+        {
+            System.out.println ("Координата x = " + this.x);
+            System.out.println ("Координата y = " + this.y);
+        }
+    }
+    
+    public static class Vector2 
+    {
+        //вектор = ai+bj, где a,b - компоненты (проекции) вектора, a i,j - базис
+        private double i; 
+        private double j;
+        //конструктор по умолчанию
+        public Vector2(Point start, Point finish)
+        {
+            this.i = finish.get_x() - start.get_x();
+            this.j = finish.get_y() - start.get_y();
+        }
+        
+        //длина вектора
+        public double length()
+        {
+            return Math.sqrt(Math.pow(this.i, 2) +Math.pow(this.j, 2));
+        }
+        
+        public void print_vector2 ()
+        {
+            System.out.println ("Компонента базиса i = " + this.i);
+            System.out.println ("Компонента базиса j = " + this.j);
+        }
+    }
+    
+    public interface Figure
+    {
+        public abstract double perimeter();
+        public abstract double square();
+        public abstract void rotation();
+        public abstract void moving();
+    }
+    
+    public static class Triangle implements Figure
+    {
+        //объявляем точки треугольника
+        private Point   p1;
+        private Point   p2; 
+        private Point   p3; 
+        
+        //конструктор по умолчанию
+        public Triangle(Point p1, Point p2, Point p3)
+        {
+            this.p1 = p1;
+            this.p2 = p2;
+            this.p3 = p3;
+        }
+        
+        //Печать координат треугольника
+        public void print_triangle()
+        {
+            p1.print_coords();
+            p2.print_coords();
+            p3.print_coords();
+        }
+        
+        //Расчет периметра
+        public double perimeter()
+        {
+            double perimeter = 0.0;
+            //Объявляем вектора (входные параметры: точка начала, точка конца)
+            Vector2 a = new Vector2(this.p1, this.p2);
+            Vector2 b = new Vector2(this.p2, this.p3);
+            Vector2 c = new Vector2(this.p3, this.p1);
+            return perimeter = a.length() + b.length() + c.length();
+        }
+        
+        public double square()
+        {
+            return 1.0/2.0 * Math.abs((p2.x -p1.x)*(p3.y-p1.y) - (p3.x -p1.x)*(p2.y-p1.y));
+        }
+        
+        public void rotation()
+        {
+            //хд
+        }
+        
+        public void moving()
+        {
+            //хд
+        }
+    }
+    
+    public static class Rectangle implements Figure
+    {
+        //объявляем точки прямоугольника
+        private Point   p1;
+        private Point   p2; 
+        private double  h; 
+        
+        //конструктор по умолчанию
+        public Rectangle(Point p1, Point p2, double h)
+        {
+            this.p1 = p1;
+            this.p2 = p2;
+            this.h = h;
+        }
+        
+        //Расчет периметра
+        public double perimeter()
+        {
+
+            return 1.5;
+        }
+        
+        public double square()
+        {
+            return 1.0;
+        }
+        
+        public void rotation()
+        {
+            //хд
+        }
+        
+        public void moving()
+        {
+            //хд
+        }
+    }
+
+    
+    /*public static class Ellipse
+    {
+        Point   c,  //точка центра фигуры
+                f1, //точка фокуса 1     
+                f2; //точка фокуса 2
+        double  a1, //длина большой оси
+                a2; //длина малой оси
+        public Ellipse(Point c, Point f1, Point f2, double a1, double a2)
+        {
+            this.c = c;
+            this.f1 = f1;
+            this.f2 = f2;
+            this.a1 = a1;
+            this.a2 = a2;
+        }
+    }
+    */
+  
+
+    public static void main (String[]args)
+    {
+        Point a = new Point(1, 2);
+        Point b = new Point(5, 9);
+        Point c = new Point(2, 7);
+        Triangle t = new Triangle(a, b, c);
+        System.out.println("Периметр треугольника равен = " + t.perimeter());
+        System.out.println("Площадь треугольника равна = " + t.square());
+        double h = 2.0;
+        Rectangle r = new Rectangle(a, b, h);
+    }
+}
