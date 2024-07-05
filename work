@@ -20,6 +20,24 @@ public class Main
             this.y = y;
         }
         
+        public Point()
+        {
+            this.x = 0.0;
+            this.y = 0.0;
+        }
+        
+        public void subtraction(Point p1)
+        {
+            this.x = x - p1.get_x();
+            this.y = y - p1.get_y();
+        }
+        
+        public void addition(Point p1)
+        {
+            this.x = x + p1.get_x();
+            this.y = y + p1.get_y();
+        }
+        
         //задать координтаы
         public void set_coords (double a, double b)
         {
@@ -58,6 +76,13 @@ public class Main
             this.j = finish.get_y() - start.get_y();
         }
         
+        
+        public void multiplication(double a)
+        {
+            this.i = this.i * a;
+            this.j = this.j * a;
+        }
+        
         //длина вектора
         public double length()
         {
@@ -75,8 +100,8 @@ public class Main
     {
         public abstract double perimeter();
         public abstract double square();
-        public abstract void rotation();
-        public abstract void moving();
+        public abstract void rotation(double angle);
+        public abstract void moving(Point delta);
     }
     
     public static class Triangle implements Figure
@@ -115,18 +140,57 @@ public class Main
         
         public double square()
         {
-            return 1.0/2.0 * Math.abs((p2.x -p1.x)*(p3.y-p1.y) - (p3.x -p1.x)*(p2.y-p1.y));
+            return 1.0/2.0 * Math.abs((p2.get_x() -p1.get_x())*(p3.get_y()-p1.get_y()) - (p3.get_x() -p1.get_x())*(p2.get_y()-p1.get_y()));
         }
         
-        public void rotation()
+        
+        public void rotation(double angle)
+        {
+            Triangle t = new Triangle(this.p1, this.p2, this.p3);
+            
+            Point centre = t.get_centre();
+            Point p11 = this.p1;
+            Point p21 = this.p2;
+            Point p31 = this.p3;
+            
+            p11.subtraction(centre);
+            p21.subtraction(centre);
+            p31.subtraction(centre);
+            
+            p11.rotation_new_position_of_point(angle, p11);
+            p21.rotation_new_position_of_point(angle, p21);
+            p31.rotation_new_position_of_point(angle, p31);
+            
+            p11.addition(centre);
+            p21.addition(centre);
+            p31.addition(centre);
+            
+            this.p1 = p11;
+            this.p2 = p21;
+            this.p3 = p31;
+        }
+        
+        public Point rotation_new_position_of_point(double angle, Point p)
+        {
+            Point a = new Point();
+            a.set_coords(p.get_x() * Math.cos(angle) - p.get_y() *  Math.sin(angle), p.get_x() * Math.sin(angle) + p.get_y() *  Math.cos(angle));
+            return a;
+        }
+
+        public void moving(Point delta)
         {
             //хд
         }
         
-        public void moving()
+        //расчет центра фигуры
+        public Point get_centre()
         {
-            //хд
+            double x = (p1.get_x() + p2.get_x() + p3.get_x()) / 3.0;
+            double y = (p1.get_y() + p2.get_y() + p3.get_y()) / 3.0;
+            Point a = new Point(x, y);
+            return a;
         }
+        
     }
     
     public static class Rectangle implements Figure
@@ -147,23 +211,33 @@ public class Main
         //Расчет периметра
         public double perimeter()
         {
-
-            return 1.5;
+            Vector2 a = new Vector2 (this.p1, this.p2);
+            return 2.0*(2.0 * h + a.length());
         }
         
         public double square()
         {
-            return 1.0;
+            Vector2 a = new Vector2 (this.p1, this.p2);
+            return (2.0 * h) * a.length();
         }
         
-        public void rotation()
+        public void rotation(double angle)
         {
             //хд
         }
         
-        public void moving()
+        public void moving(Point delta)
         {
             //хд
+        }
+        
+         //расчет центра фигуры
+        public Point get_centre()
+        {
+            double x = (p1.get_x() + p2.get_x()) / 2.0;
+            double y = (p1.get_y() + p2.get_y()) / 2.0;
+            Point a = new Point(x, y);
+            return a;
         }
     }
 
@@ -189,13 +263,31 @@ public class Main
 
     public static void main (String[]args)
     {
+        
         Point a = new Point(1, 2);
         Point b = new Point(5, 9);
-        Point c = new Point(2, 7);
+        Point c = new Point(1, 7);
+
+        Vector2 v = new Vector2(a, b);
+        
+        /*System.out.println("Вектор"); 
+        v.print_vector2();
+        v.multiplication(1.5);
+        v.print_vector2();*/
+        
         Triangle t = new Triangle(a, b, c);
-        System.out.println("Периметр треугольника равен = " + t.perimeter());
+        /*System.out.println("Периметр треугольника равен = " + t.perimeter());
         System.out.println("Площадь треугольника равна = " + t.square());
-        double h = 2.0;
+        Point centre = new Point();
+        centre = t.get_centre();
+        System.out.println("Точка центра треугольника");
+        centre.print_coords();*/
+        System.out.println("Поворот треугольника");
+        t.rotation(30);
+        
+        /*double h = 2.0;
         Rectangle r = new Rectangle(a, b, h);
+        System.out.println("Периметр треугольника равен = " + r.perimeter());
+        System.out.println("Площадь треугольника равна = " + r.square());*/
     }
 }
