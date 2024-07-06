@@ -28,39 +28,62 @@ public class Main
         
         public void subtraction(Point p1)
         {
-            this.x = x - p1.get_x();
-            this.y = y - p1.get_y();
+            this.x = this.x - p1.getX();
+            this.y = this.y - p1.getY();
         }
         
         public void addition(Point p1)
         {
-            this.x = x + p1.get_x();
-            this.y = y + p1.get_y();
+            this.x = this.x + p1.getX();
+            this.y = this.y + p1.getY();
         }
         
-        //задать координтаы
-        public void set_coords (double a, double b)
+        //задать координаты
+        public void setCoords (double a, double b)
         {
             this.x = a;
             this.y = b;
         }
+        
+        //задать координату x
+        public void setX (double a)
+        {
+            this.x = a;
+        }
+        
+        //задать координату Y
+        public void setY (double b)
+        {
+            this.y = b;
+        }
 
         //получить компоненту х
-        public double get_x ()
+        public double getX ()
         {
             return this.x;
         }
         
         //пол
-        public double get_y ()
+        public double getY ()
         {
             return this.y;
         }
 
-        public void print_coords ()
+        public void printCoords ()
         {
             System.out.println ("Координата x = " + this.x);
             System.out.println ("Координата y = " + this.y);
+        }
+    }
+    
+    final class NewPoint implements Point
+    {
+        private Point oldPoint; //точка откуда перемещаем
+        private Point newPoint; //точка куда перемещаем
+         public NewPoint(Point oldPoint, Point newPoint)
+        {
+            this.oldPoint = oldPoint;
+            this.newPoint = newPoint;
         }
     }
     
@@ -72,8 +95,8 @@ public class Main
         //конструктор по умолчанию
         public Vector2(Point start, Point finish)
         {
-            this.i = finish.get_x() - start.get_x();
-            this.j = finish.get_y() - start.get_y();
+            this.i = finish.getX() - start.getX();
+            this.j = finish.getY() - start.getY();
         }
         
         
@@ -89,7 +112,7 @@ public class Main
             return Math.sqrt(Math.pow(this.i, 2) +Math.pow(this.j, 2));
         }
         
-        public void print_vector2 ()
+        public void printVector2 ()
         {
             System.out.println ("Компонента базиса i = " + this.i);
             System.out.println ("Компонента базиса j = " + this.j);
@@ -120,11 +143,11 @@ public class Main
         }
         
         //Печать координат треугольника
-        public void print_triangle()
+        public void printTriangle()
         {
-            p1.print_coords();
-            p2.print_coords();
-            p3.print_coords();
+            p1.printCoords();
+            p2.printCoords();
+            p3.printCoords();
         }
         
         //Расчет периметра
@@ -140,7 +163,7 @@ public class Main
         
         public double square()
         {
-            return 1.0/2.0 * Math.abs((p2.get_x() -p1.get_x())*(p3.get_y()-p1.get_y()) - (p3.get_x() -p1.get_x())*(p2.get_y()-p1.get_y()));
+            return 1.0/2.0 * Math.abs((p2.getX() -p1.getX())*(p3.getY()-p1.getY()) - (p3.getX() -p1.getX())*(p2.getY()-p1.getY()));
         }
         
         
@@ -148,7 +171,7 @@ public class Main
         {
             Triangle t = new Triangle(this.p1, this.p2, this.p3);
             
-            Point centre = t.get_centre();
+            Point centre = t.getCentre();
             Point p11 = this.p1;
             Point p21 = this.p2;
             Point p31 = this.p3;
@@ -157,9 +180,9 @@ public class Main
             p21.subtraction(centre);
             p31.subtraction(centre);
             
-            p11.rotation_new_position_of_point(angle, p11);
-            p21.rotation_new_position_of_point(angle, p21);
-            p31.rotation_new_position_of_point(angle, p31);
+            p11.rotationNewPositionOfPoint(angle, p11);
+            p21.rotationNewPositionOfPoint(angle, p21);
+            p31.rotationNewPositionOfPoint(angle, p31);
             
             p11.addition(centre);
             p21.addition(centre);
@@ -170,10 +193,10 @@ public class Main
             this.p3 = p31;
         }
         
-        public Point rotation_new_position_of_point(double angle, Point p)
+        public Point rotationNewPositionOfPoint(double angle, Point p)
         {
             Point a = new Point();
-            a.set_coords(p.get_x() * Math.cos(angle) - p.get_y() *  Math.sin(angle), p.get_x() * Math.sin(angle) + p.get_y() *  Math.cos(angle));
+            a.set_coords(p.getX() * Math.cos(angle) - p.getY() *  Math.sin(angle), p.getX() * Math.sin(angle) + p.getY() *  Math.cos(angle));
             return a;
         }
 
@@ -183,10 +206,10 @@ public class Main
         }
         
         //расчет центра фигуры
-        public Point get_centre()
+        public Point getCentre()
         {
-            double x = (p1.get_x() + p2.get_x() + p3.get_x()) / 3.0;
-            double y = (p1.get_y() + p2.get_y() + p3.get_y()) / 3.0;
+            double x = (p1.getX() + p2.getX() + p3.getX()) / 3.0;
+            double y = (p1.getY() + p2.getY() + p3.getY()) / 3.0;
             Point a = new Point(x, y);
             return a;
         }
@@ -232,10 +255,10 @@ public class Main
         }
         
          //расчет центра фигуры
-        public Point get_centre()
+        public Point getCentre()
         {
-            double x = (p1.get_x() + p2.get_x()) / 2.0;
-            double y = (p1.get_y() + p2.get_y()) / 2.0;
+            double x = (p1.getX() + p2.getX()) / 2.0;
+            double y = (p1.getY() + p2.getY()) / 2.0;
             Point a = new Point(x, y);
             return a;
         }
