@@ -290,6 +290,40 @@ public class Main
             
             return list;
         }
+
+        //Описанная окружность
+    public Circle getOuterCircle()
+    {
+        double x_12 = this.p1.getX() - this.p2.getX();
+        double y_12 = this.p1.getY() - this.p2.getY();
+        double x_23 = this.p2.getX() - this.p3.getX();
+        double y_23 = this.p2.getY() - this.p3.getY();;
+        double x_31 = this.p3.getX() - this.p1.getX();
+        double y_31 = this.p3.getY() - this.p1.getY();
+        double z_1 = Math.pow(this.p1.getX(), 2) + Math.pow(this.p1.getY(), 2);
+        double z_2 = Math.pow(this.p2.getX(), 2) + Math.pow(this.p2.getY(), 2);
+        double z_3 = Math.pow(this.p3.getX(), 2) + Math.pow(this.p3.getY(), 2);
+        double z_x = y_12*z_3 + y_23*z_1 + y_31*z_2;
+        double z_y = x_12*z_3 + x_23*z_1 + x_31*z_2;
+        double z = x_12*y_31 - y_12*x_31;
+        Point centre  = new Point(-z_x/(2.0 * z), z_y/(2.0 * z));
+        Vector2 r = new Vector2(centre, this.p1);
+        return new Circle(centre, r.length());
+    }
+
+    //Вписанная окружность
+    public Circle getInnerCircle()
+    {
+        Triangle t = new Triangle(this.p1, this.p2, this.p3);
+        double r = t.square()/(t.perimeter()/2.0);
+        Vector2 a = new Vector2(p2, p3);
+        Vector2 b = new Vector2(p3, p1);
+        Vector2 c = new Vector2(p1, p2);
+        double x = (a.length()*p1.getX() + b.length()*p2.getX()+c.length()*p3.getX())/(a.length()+b.length()+c.length());
+        double y = (a.length()*p1.getY() + b.length()*p2.getY()+c.length()*p3.getY())/(a.length()+b.length()+c.length());
+        Point centre  = new Point(x,y);
+        return new Circle(centre, r);
+    }
     }
     
     public static class Rectangle implements Figure
@@ -478,46 +512,52 @@ public class Main
         }
     }
     
-    public static class Circle 
+   public class Circle {
+    Point  c;  //Точка центра фигуры
+    double r;   //Радиус окружности
+    public Circle(Point c, double r)
     {
-        Point  c;  //Точка центра фигуры
-        double r;   //Радиус окружности
-        public Circle(Point c, double r)
-        {
-            this.c = c;
-            this.r = r;
-        }
-        
-        //Получение радиуса
-        public double getRadius ()
-        {
-            return this.r;
-        }
-        
-        //Масштабирование
-        public void scaling (double coeff)
-        {
-             this.r = this.r * coeff;
-        }
-        
-        //Перемещение
-        public void moving(Point newCentre)
-        {
-            this.c = newCentre;
-        }
-        
-        //Расчет длины окружности 
-        public double circumference()
-        {
-            return 2.0*Math.PI*r;
-        }
-        
-        //Расчет площади
-        public double square()
-        {
-            return Math.PI*Math.pow(r,2);
-        }
+        this.c = c;
+        this.r = r;
     }
+
+    //Получение радиуса
+    public double getRadius ()
+    {
+        return this.r;
+    }
+
+    //Масштабирование
+    public void scaling (double coeff)
+    {
+        this.r = this.r * coeff;
+    }
+
+    //Перемещение
+    public void moving(Point newCentre)
+    {
+        this.c = newCentre;
+    }
+
+    //Расчет длины окружности
+    public double circumference()
+    {
+        return 2.0*Math.PI*r;
+    }
+
+    //Расчет площади
+    public double square()
+    {
+        return Math.PI*Math.pow(r,2);
+    }
+
+    //Печать окружности
+    public void printCircle()
+    {
+        c.printCoords();
+        System.out.println("Радиус= " + r);
+    }
+}
   
 
     public static void main (String[]args)
