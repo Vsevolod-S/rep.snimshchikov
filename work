@@ -472,43 +472,86 @@ public class Main
     
     public static class Ellipse implements Figure
     {
-        Point   c;  //точка центра фигуры
         Point   f1; //точка фокуса 1     
         Point   f2; //точка фокуса 2
-        double  a1; //длина большой оси
-        double  a2; //длина малой оси
-        public Ellipse(Point c, Point f1, Point f2, double a1, double a2)
+        double  r;  //перифокусное расстояние (минимальное расстояние от фокуса до точки на эллипсе)
+        public Ellipse(Point f1, Point f2, double r)
         {
-            this.c = c;
             this.f1 = f1;
             this.f2 = f2;
-            this.a1 = a1;
-            this.a2 = a2;
+            this.r = r;
         }
         
         public abstract double circumference()
         {
-            return 2.0 * Math.PI * sqrt((pow(this.a1/2, 2) + pow(this.a2/2, 2))/2);
+            return 2.0 * Math.PI * Math.sqrt((Math.pow(this.a1/2, 2) + Math.pow(this.a2/2, 2))/2);
         }
+        
         public abstract double square()
         {
-            return 2.0 * Math.PI * sqrt((pow(this.a1, 2) + pow(this.a2, 2))/8);
+            return 2.0 * Math.PI * Math.sqrt((Math.pow(this.a1, 2) + Math.pow(this.a2, 2))/8);
         }
-        public abstract void rotation(double angle)
+
+        //Вращение
+        public void rotation(double angle)
         {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
             
+            //Расчет центра 
+            Point centre = e.getCentre();
+            
+            //Вычитаем из каждой точки точку центра (переносим центр прямоугольника в начало координат)
+            this.f1.subtraction(centre);
+            this.f2.subtraction(centre);
+            
+            //Вращаем прямоугольник относительно начала координат
+            this.f1.rotationNewPositionOfPoint(angle);
+            this.f2.rotationNewPositionOfPoint(angle);
+            
+            //Возвращаем центр прямоугольника на прежнее место (до вращения)
+            this.f1.addition(centre);
+            this.f2.addition(centre);
         }
-        public abstract void moving(Point newCentre)
+        
+        //Перемещение
+        public void moving(Point newCentre)
         {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
             
+            //Расчет разности между старым и новым центром (результат храним в newCentre)
+            newCentre.subtraction(e.getCentre());
+            
+            //Добавление разности между центрами (само перемещение)
+            this.f1.addition(newCentre);
+            this.f2.addition(newCentre);
         }
-        public abstract void scaling (double coeff)
+        
+        //Расчет центра фигуры
+        public Point getCentre()
         {
-            
+            double x = (f1.getX() + f2.getX()) / 2.0;
+            double y = (f1.getY() + f2.getY()) / 2.0;
+            return new Point(x, y);
         }
-        public abstract Point getCentre()
+         
+        //Масштабирование
+        public void scaling (double coeff)
         {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
+            Point centre = e.getCentre();
             
+            //Вычитаем из каждой точки точку центра (переносим центр треугольника в начало координат)
+            this.f1.subtraction(centre);
+            this.f2.subtraction(centre);
+            
+            //Умножаем координаты на коэффициент
+            this.f1.setCoords(this.f1.getX() * coeff, this.f1.getY() * coeff);
+            this.f2.setCoords(this.f2.getX() * coeff, this.f2.getY() * coeff);
+            this.r = r * coeff;
+            
+            //Возвращаем центр треугольника на прежнее место (до масштабирования)
+            this.f1.addition(centre);
+            this.f2.addition(centre);
         }
     }
     
