@@ -574,6 +574,14 @@ public class Main
             
             return list;
         }
+        //Длина большей полуоси
+        public double getTheBigAxleShaft()
+        {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
+            Point centre = e.getCentre();
+            Vector2 v = new Vector2(this.f1, centre);
+            return this.r + v.length();
+        }
     }
     
    public class Circle {
