@@ -553,6 +553,14 @@ public class Main
             this.f1.addition(centre);
             this.f2.addition(centre);
         }
+        //расстояние от фокуса до центра
+        public double distanceFromFocusToCenter()
+        {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
+            Point centre = e.getCentre();
+            Vector2 v = new Vector2(this.f1, centre);
+            return v.length();
+        }
     }
     
    public class Circle {
