@@ -561,6 +561,19 @@ public class Main
             Vector2 v = new Vector2(this.f1, centre);
             return v.length();
         }
+        
+        //Получение обоих фокусов в виде списка
+        public ArrayList<Point> getFocusPoints ()
+        {
+            //Объявляем список точек рамером 2 [0...1]
+            ArrayList<Point> list = new ArrayList<>(1);
+            
+            //Добавляем фокусы
+            list.add(this.f1);
+            list.add(this.f2);
+            
+            return list;
+        }
     }
     
    public class Circle {
