@@ -582,6 +582,16 @@ public class Main
             Vector2 v = new Vector2(this.f1, centre);
             return this.r + v.length();
         }
+
+        //Длина малой полуоси
+        public double getTheMinorAxleShaft()
+        {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
+            Point centre = e.getCentre();
+            Vector2 v = new Vector2(this.f1, centre);
+            double x = this.r + v.length();
+            return Math.sqrt(Math.pow(x,2) - Math.pow(v.length(),2));
+        }
     }
     
    public class Circle {
