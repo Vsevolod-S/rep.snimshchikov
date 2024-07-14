@@ -592,6 +592,13 @@ public class Main
             double x = this.r + v.length();
             return Math.sqrt(Math.pow(x,2) - Math.pow(v.length(),2));
         }
+        
+        //Расчет эксцентриситета
+        public double eccentricity()
+        {
+            Ellipse e = new Ellipse(this.f1, this.f2, this.r);
+            return e.distanceFromFocusToCenter()/e.getTheBigAxleShaft();
+        }
     }
     
    public class Circle {
