@@ -53,5 +53,6 @@ public class CircleTest {
         double r = 1.0;
         Circle c = new Circle(a, r);
         assertEquals(2.0*Math.PI, c.square());
+        //не работает
     }*/
 }
